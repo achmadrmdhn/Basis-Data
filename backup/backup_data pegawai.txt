@@ -1,0 +1,25 @@
+MariaDB [dbpegawai]>
+
+insert into pegawai
+(nip, nama, gender, tmp_lahir, tgl_lahir, iddivisi, idjabatan, alamat) values
+('00001', 'Achmad Rifai', 'Laki-Laki', 'Bogor', '2004-11-05', 1, 1, 'Jl. Lingkungan 03 Citatah
+RW 09'),
+('00002', 'Rifai Ramadhan', 'Laki-Laki', 'Depok', '2008-02-16', 1, 2, 'Jl. Penuh CCTV No. 03'),
+('00003', 'Hafis Adam', 'Laki-Laki', 'Bogor', '2005-05-23', 1, 4, 'Jl. Sarimie No. 13'),
+('00004', 'David Kristian', 'Laki-Laki', 'Bogor', '2006-08-05', 1, 4, 'Jl. Tanah Abang No. 55'),
+('00005', 'Muhammad Rafli', 'Laki-Laki', 'Jakarta', '2004-03-25', 1, 3, 'Jl. Mushola Al Iman No. 01'),
+('00006', 'Muhammad Hafis', 'Laki-Laki', 'Banten', '2003-01-18', 2, 2, 'Jl. Syekh Nawawi No. 09'),
+('00007', 'Ibrahimovic', 'Laki-Laki', 'Denpasar', '1997-06-17', 2, 1, 'Jl. Pandawa No. 05'),
+('00008', 'Maya', 'Perempuan', 'Bogor', '2002-05-08', 2, 3, 'Jl. Kranji Barat No. 23'),
+('00009', 'Aisyah Nur', 'Perempuan', 'Sumedang', '2004-03-30', 2, 4, 'Jl. Istana Sumedang No. 33'),
+('00010', 'Ryan Kholilie', 'Laki-Laki', 'Madura', '1993-09-13', 2, 2, 'Jl. Bangkalan No. 13'),
+('00011', 'Kholil Nafis', 'Laki-Laki', 'Pasuruan', '1965-04-14', 3, 4, 'Jl. Kiara Angsana No. 51'),
+('00012', 'Frimawan Santoso', 'Laki-Laki', 'Medan', '1995-10-28', 3, 1, 'Jl. Toba No. 52'),
+('00013', 'Atih', 'Perempuan', 'Jakarta', '1972-01-15', 3, 2, 'Jl. Bundaran HI No. 13'),
+('00014', 'Nilam Nur', 'Perempuan', 'Jakarta', '2005-09-08', 3, 3, 'Jl. Kampung Bayam No. 07'),
+('00015', 'Asep Wedding', 'Laki-Laki', 'Jakarta', '2000-05-11', 3, 4, 'Jl. Menteng No. 17'),
+('00016', 'Ferry', 'Laki-Laki', 'Bogor', '1999-02-25', 4, 2, 'Jl. Empang Bogor No. 01'),
+('00017', 'Musthofa', 'Laki-Laki', 'Jakarta', '2003-10-13', 4, 4, 'Jl. Merdeka Barat No. 77'),
+('00018', 'Muhammad Arifin', 'Laki-Laki', 'Bogor', '1991-08-17', 4, 2, 'Jl. Warung Jambu No. 21'),
+('00019', 'Adil Brutu', 'Laki-Laki', 'Medan', '1974-06-21', 4, 3, 'Jl. Marga Brutu No. 42'),
+('00020', 'Amir', 'Laki-Laki', 'Bogor', '2007-12-04', 4, 1, 'Jl. Pakuan Siliwangi No. 49');

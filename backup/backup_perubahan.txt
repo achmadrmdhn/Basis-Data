@@ -1,0 +1,15 @@
+18)) MariaDB [dbpegawai]> update pegawai set
+    -> berat_badan = round(rand() * 35 + 65, 1);
+Query OK, 18 rows affected (0.002 sec)
+Rows matched: 18  Changed: 18  Warnings: 0
+
+35)) MariaDB [dbpegawai]> select nip, nama, umur as 'umur_pegawai_tertua'
+    -> from pegawai
+    -> where umur = (select max(umur) as max_umur
+    -> from pegawai);
++-------+------------+---------------------+
+| nip   | nama       | umur_pegawai_tertua |
++-------+------------+---------------------+
+| 00009 | Aisyah Nur |                  74 |
++-------+------------+---------------------+
+1 row in set (0.000 sec)

@@ -1,0 +1,1119 @@
+achma@DESKTOP-MU12K96 c:\xampp2
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database dbpegawai;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use dbpegawai;
+Database changed
+MariaDB [dbpegawai]> create table divisi (
+    -> id int primary key auto_increment,
+    -> nama varchar(30) not null unique);
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [dbpegawai]> desc divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.008 sec)
+
+MariaDB [dbpegawai]> create table jabatan (
+    -> id int primary key auto_increment,
+    -> nama varchar(30) not null unique);
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [dbpegawai]> desc jabatan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.007 sec)
+
+MariaDB [dbpegawai]> create table pegawai (
+    -> id int primary key auto_increment,
+    -> nip char(5) not null unique,
+    -> nama varchar(30) not null,
+    -> gender enum('Laki-Laki', 'Perempuan') not null,
+    -> tmp_lahir varchar(30) not null,
+    -> tgl_lahir date not null,
+    -> iddivisi int not null,
+    -> idjabatan int not null,
+    -> foreign key (iddivisi) references divisi(id),
+    -> foreign key (idjabatan) references jabatan(id),
+    -> alamat text);
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [dbpegawai]> desc pegawai;
++-----------+-------------------------------+------+-----+---------+----------------+
+| Field     | Type                          | Null | Key | Default | Extra          |
++-----------+-------------------------------+------+-----+---------+----------------+
+| id        | int(11)                       | NO   | PRI | NULL    | auto_increment |
+| nip       | char(5)                       | NO   | UNI | NULL    |                |
+| nama      | varchar(30)                   | NO   |     | NULL    |                |
+| gender    | enum('Laki-Laki','Perempuan') | NO   |     | NULL    |                |
+| tmp_lahir | varchar(30)                   | NO   |     | NULL    |                |
+| tgl_lahir | date                          | NO   |     | NULL    |                |
+| iddivisi  | int(11)                       | NO   | MUL | NULL    |                |
+| idjabatan | int(11)                       | NO   | MUL | NULL    |                |
+| alamat    | text                          | YES  |     | NULL    |                |
++-----------+-------------------------------+------+-----+---------+----------------+
+9 rows in set (0.007 sec)
+
+MariaDB [dbpegawai]> show tables;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| jabatan             |
+| pegawai             |
++---------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> insert into divisi
+    -> (nama) values
+    -> ('SDM'),
+    -> ('Keuangan'),
+    -> ('Marketing'),
+    -> ('IT');
+Query OK, 4 rows affected (0.002 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> select * from divisi
+    -> ;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> insert into jabatan
+    -> (nama) values
+    -> ('Direktur'),
+    -> ('Manajer'),
+    -> ('Asisten Manajer'),
+    -> ('Staff');
+Query OK, 4 rows affected (0.001 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> select * from jabatan;
++----+-----------------+
+| id | nama            |
++----+-----------------+
+|  3 | Asisten Manajer |
+|  1 | Direktur        |
+|  2 | Manajer         |
+|  4 | Staff           |
++----+-----------------+
+4 rows in set (0.000 sec)
+
+MariaDB [(none)]> use dbpegawai;
+Database changed
+MariaDB [dbpegawai]> select nip, nama, jenis_kelamin, alamat from pegawai;
++-------+------------------+---------------+---------------------------------+
+| nip   | nama             | jenis_kelamin | alamat                          |
++-------+------------------+---------------+---------------------------------+
+| 00001 | Achmad Rifai     | Laki-Laki     | Jl. Lingkungan 03 Citatah RW 09 |
+| 00002 | Rifai Ramadhan   | Laki-Laki     | Jl. Penuh CCTV No. 03           |
+| 00003 | Hafis Adam       | Laki-Laki     | Jl. Sarimie No. 13              |
+| 00004 | Faliza           | Perempuan     | Jl. Tanah Abang No. 55          |
+| 00005 | Muhammad Rafli   | Laki-Laki     | Jl. Mushola Al Iman No. 01      |
+| 00006 | Muhammad Hafis   | Laki-Laki     | Jl. Syekh Nawawi No. 09         |
+| 00007 | Ibrahimovic      | Laki-Laki     | Jl. Pandawa No. 05              |
+| 00008 | Rifzal           | Laki-Laki     | Jl. Kranji Barat No. 23         |
+| 00009 | Aisyah Nur       | Perempuan     | Jl. Istana Sumedang No. 33      |
+| 00010 | Ryan Kholilie    | Laki-Laki     | Jl. Bangkalan No. 13            |
+| 00011 | Kholil Nafis     | Laki-Laki     | Jl. Kiara Angsana No. 51        |
+| 00012 | Frimawan Santoso | Laki-Laki     | Jl. Toba No. 52                 |
+| 00013 | Mada             | Laki-Laki     | Jl. Bundaran HI No. 13          |
+| 00014 | Nilam Nur        | Perempuan     | Jl. Kampung Bayam No. 07        |
+| 00015 | Asep Wedding     | Laki-Laki     | Jl. Menteng No. 17              |
+| 00016 | Reisha           | Perempuan     | Jl. Empang Bogor No. 01         |
+| 00017 | Musthofa         | Laki-Laki     | Jl. Merdeka Barat No. 77        |
+| 00018 | Muhammad Arifin  | Laki-Laki     | Jl. Warung Jambu No. 21         |
++-------+------------------+---------------+---------------------------------+
+18 rows in set (0.024 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> berat_badan = round(rand() * (100 - 50) + 50, 2);
+Query OK, 18 rows affected (0.001 sec)
+Rows matched: 18  Changed: 18  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 2004-03-30 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Madura    | 1993-09-13 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 2004-03-30 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Madura    | 1993-09-13 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = year(current_date()) - year(tgl_lahir);
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 18  Changed: 0  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 2004-03-30 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Madura    | 1993-09-13 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where jenis_kelamin = 'Laki-Laki';
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Madura    | 1993-09-13 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+14 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where iddivisi = 4 and jenis_kelamin = 'Perempuan';
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                  | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| 16 | 00016 | Reisha | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01 |       57.42 |   21 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+1 row in set (0.001 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where umur > 30 and tmp_lahir = 'Jakarta';
+Empty set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where umur > 30 and tmp_lahir = 'Bogor';
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                  | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21 |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where umur > 10 and tmp_lahir = 'Jakarta';
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                     | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01 |       84.76 |   20 |
+| 13 | 00013 | Mada           | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13     |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur      | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07   |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding   | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17         |       51.14 |   24 |
+| 17 | 00017 | Musthofa       | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77   |       83.71 |   21 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jakarta', tgl_lahir = '1956-05-11' where id = 10;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 2004-03-30 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where umur > 30 and tmp_lahir = 'Jakarta';
++----+-------+---------------+---------------+-----------+------------+----------+-----------+----------------------+-------------+------+
+| id | nip   | nama          | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat               | berat_badan | umur |
++----+-------+---------------+---------------+-----------+------------+----------+-----------+----------------------+-------------+------+
+| 10 | 00010 | Ryan Kholilie | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13 |       58.71 |   31 |
++----+-------+---------------+---------------+-----------+------------+----------+-----------+----------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where iddivisi = 3 and umur > 30 and jenis_kelamin = 'Perempuan';
+Empty set (0.000 sec)
+
+MariaDB [dbpegawai]> select nama, tgl_lahir, iddivisi, umur from pegawai;
++------------------+------------+----------+------+
+| nama             | tgl_lahir  | iddivisi | umur |
++------------------+------------+----------+------+
+| Achmad Rifai     | 2004-11-05 |        1 |   20 |
+| Rifai Ramadhan   | 2008-02-16 |        1 |   16 |
+| Hafis Adam       | 2005-05-23 |        1 |   19 |
+| Faliza           | 2004-09-10 |        1 |   20 |
+| Muhammad Rafli   | 2004-03-25 |        1 |   20 |
+| Muhammad Hafis   | 2003-01-18 |        2 |   21 |
+| Ibrahimovic      | 1997-06-17 |        2 |   27 |
+| Rifzal           | 2002-07-12 |        2 |   22 |
+| Aisyah Nur       | 2004-03-30 |        2 |   20 |
+| Ryan Kholilie    | 1956-05-11 |        2 |   31 |
+| Kholil Nafis     | 1965-04-14 |        3 |   59 |
+| Frimawan Santoso | 1995-10-28 |        3 |   29 |
+| Mada             | 2005-02-15 |        3 |   19 |
+| Nilam Nur        | 2005-09-08 |        3 |   19 |
+| Asep Wedding     | 2000-05-11 |        3 |   24 |
+| Reisha           | 2003-11-22 |        4 |   21 |
+| Musthofa         | 2003-10-13 |        4 |   21 |
+| Muhammad Arifin  | 1991-08-17 |        4 |   33 |
++------------------+------------+----------+------+
+18 rows in set (0.000 sec)
+
+
+MariaDB [dbpegawai]> select * from pegawai;;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 2004-03-30 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tgl_lahir = '1950-03-11' where id = 9;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   20 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   31 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = year(current_date()) - year(tgl_lahir);
+Query OK, 2 rows affected (0.002 sec)
+Rows matched: 18  Changed: 2  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 2005-09-08 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> desc divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.010 sec)
+
+MariaDB [dbpegawai]> select * from divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tgl_lahir = '1955-11-23' where id = 14;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = year(current_date()) - year(tgl_lahir);
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 18  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   69 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   69 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select nip, nama, jenis_kelamin, alamat from pegawai;
++-------+------------------+---------------+---------------------------------+
+| nip   | nama             | jenis_kelamin | alamat                          |
++-------+------------------+---------------+---------------------------------+
+| 00001 | Achmad Rifai     | Laki-Laki     | Jl. Lingkungan 03 Citatah RW 09 |
+| 00002 | Rifai Ramadhan   | Laki-Laki     | Jl. Penuh CCTV No. 03           |
+| 00003 | Hafis Adam       | Laki-Laki     | Jl. Sarimie No. 13              |
+| 00004 | Faliza           | Perempuan     | Jl. Tanah Abang No. 55          |
+| 00005 | Muhammad Rafli   | Laki-Laki     | Jl. Mushola Al Iman No. 01      |
+| 00006 | Muhammad Hafis   | Laki-Laki     | Jl. Syekh Nawawi No. 09         |
+| 00007 | Ibrahimovic      | Laki-Laki     | Jl. Pandawa No. 05              |
+| 00008 | Rifzal           | Laki-Laki     | Jl. Kranji Barat No. 23         |
+| 00009 | Aisyah Nur       | Perempuan     | Jl. Istana Sumedang No. 33      |
+| 00010 | Ryan Kholilie    | Laki-Laki     | Jl. Bangkalan No. 13            |
+| 00011 | Kholil Nafis     | Laki-Laki     | Jl. Kiara Angsana No. 51        |
+| 00012 | Frimawan Santoso | Laki-Laki     | Jl. Toba No. 52                 |
+| 00013 | Mada             | Laki-Laki     | Jl. Bundaran HI No. 13          |
+| 00014 | Nilam Nur        | Perempuan     | Jl. Kampung Bayam No. 07        |
+| 00015 | Asep Wedding     | Laki-Laki     | Jl. Menteng No. 17              |
+| 00016 | Reisha           | Perempuan     | Jl. Empang Bogor No. 01         |
+| 00017 | Musthofa         | Laki-Laki     | Jl. Merdeka Barat No. 77        |
+| 00018 | Muhammad Arifin  | Laki-Laki     | Jl. Warung Jambu No. 21         |
++-------+------------------+---------------+---------------------------------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where jenis_kelamin = 'Laki-Laki';
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+14 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where iddivisi = 4 and jenis_kelamin = 'Perempuan';
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                  | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+| 16 | 00016 | Reisha | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01 |       57.42 |   21 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+-------------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where umur > 30 and tmp_lahir = 'Jakarta';
++----+-------+---------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama          | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+---------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 10 | 00010 | Ryan Kholilie | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13     |       58.71 |   68 |
+| 14 | 00014 | Nilam Nur     | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
++----+-------+---------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+2 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where iddivisi = 3 and umur > 30 and jenis_kelamin = 'Perempuan';
++----+-------+-----------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama      | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 14 | 00014 | Nilam Nur | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
++----+-------+-----------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nip = '00009';
++----+-------+------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+| id | nip   | nama       | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                     | berat_badan | umur |
++----+-------+------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+|  9 | 00009 | Aisyah Nur | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33 |       78.47 |   74 |
++----+-------+------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+1 row in set (0.001 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where jenis_kelamin = 'Laki-Laki';
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah
+RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+14 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nip in ('00005', '00011', '00015');
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                     | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01 |       84.76 |   20 |
+| 11 | 00011 | Kholil Nafis   | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51   |       58.15 |   59 |
+| 15 | 00015 | Asep Wedding   | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17         |       51.14 |   24 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where tmp_lahir not in ('Jakarta', 'Bogor', 'Depok');
++----+-------+------------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                     | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09    |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05         |       75.86 |   27 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33 |       78.47 |   74 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51   |       58.15 |   59 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52            |       64.62 |   29 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where tmp_lahir not in ('Medan', 'Bali', 'Depok');
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai    | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah
+RW 09 |       90.68 |   20 |
+|  3 | 00003 | Hafis Adam      | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza          | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli  | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis  | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  7 | 00007 | Ibrahimovic     | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+|  8 | 00008 | Rifzal          | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+|  9 | 00009 | Aisyah Nur      | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 10 | 00010 | Ryan Kholilie   | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis    | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 13 | 00013 | Mada            | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 14 | 00014 | Nilam Nur       | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   69 |
+| 15 | 00015 | Asep Wedding    | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+16 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by nama asc;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   69 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by berat_badan desc;
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| 14 | 00014 | Nilam Nur        | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07        |       99.42 |   69 |
+| 13 | 00013 | Mada             | Laki-Laki     | Jakarta   | 2005-02-15 |        3 |         2 | Jl. Bundaran HI No. 13          |       98.66 |   19 |
+| 18 | 00018 | Muhammad Arifin  | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21         |       96.27 |   33 |
+|  1 | 00001 | Achmad Rifai     | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  5 | 00005 | Muhammad Rafli   | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
+| 17 | 00017 | Musthofa         | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77        |       83.71 |   21 |
+|  3 | 00003 | Hafis Adam       | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  9 | 00009 | Aisyah Nur       | Perempuan     | Sumedang  | 1950-03-11 |        2 |         4 | Jl. Istana Sumedang No. 33      |       78.47 |   74 |
+|  7 | 00007 | Ibrahimovic      | Laki-Laki     | Denpasar  | 1997-06-17 |        2 |         1 | Jl. Pandawa No. 05              |       75.86 |   27 |
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52                 |       64.62 |   29 |
+|  8 | 00008 | Rifzal           | Laki-Laki     | Bogor     | 2002-07-12 |        2 |         3 | Jl. Kranji Barat No. 23         |       61.21 |   22 |
+| 10 | 00010 | Ryan Kholilie    | Laki-Laki     | Jakarta   | 1956-05-11 |        2 |         2 | Jl. Bangkalan No. 13            |       58.71 |   68 |
+| 11 | 00011 | Kholil Nafis     | Laki-Laki     | Pasuruan  | 1965-04-14 |        3 |         4 | Jl. Kiara Angsana No. 51        |       58.15 |   59 |
+| 16 | 00016 | Reisha           | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01         |       57.42 |   21 |
+|  6 | 00006 | Muhammad Hafis   | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09         |       56.03 |   21 |
+|  4 | 00004 | Faliza           | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+| 15 | 00015 | Asep Wedding     | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17              |       51.14 |   24 |
+|  2 | 00002 | Rifai Ramadhan   | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+18 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id asc
+    -> limit 5;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai limit 5;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id
+    -> limit 5;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> limit 5;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> limit 5 offset 0;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id desc
+    -> limit 5 offset 0;
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21  |       96.27 |   33 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77 |       83.71 |   21 |
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01  |       57.42 |   21 |
+| 15 | 00015 | Asep Wedding    | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17       |       51.14 |   24 |
+| 14 | 00014 | Nilam Nur       | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> limit 5 offset 15;
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01  |       57.42 |   21 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77 |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21  |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> limit 5 offset 13;
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 14 | 00014 | Nilam Nur       | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
+| 15 | 00015 | Asep Wedding    | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17       |       51.14 |   24 |
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01  |       57.42 |   21 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77 |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21  |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id
+    -> limit 5 offset 0;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id asc
+    -> limit 5 offset 0;
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                          | berat_badan | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+|  1 | 00001 | Achmad Rifai   | Laki-Laki     | Bogor     | 2004-11-05 |        1 |         1 | Jl. Lingkungan 03 Citatah RW 09 |       90.68 |   20 |
+|  2 | 00002 | Rifai Ramadhan | Laki-Laki     | Depok     | 2008-02-16 |        1 |         2 | Jl. Penuh CCTV No. 03           |       50.73 |   16 |
+|  3 | 00003 | Hafis Adam     | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13              |       81.62 |   19 |
+|  4 | 00004 | Faliza         | Perempuan     | Bogor     | 2004-09-10 |        1 |         4 | Jl. Tanah Abang No. 55          |       55.93 |   20 |
+|  5 | 00005 | Muhammad Rafli | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01      |       84.76 |   20 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> order by id desc
+    -> limit 5 offset 0;
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21  |       96.27 |   33 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77 |       83.71 |   21 |
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01  |       57.42 |   21 |
+| 15 | 00015 | Asep Wedding    | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17       |       51.14 |   24 |
+| 14 | 00014 | Nilam Nur       | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> limit 5 offset 13;
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                   | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+| 14 | 00014 | Nilam Nur       | Perempuan     | Jakarta   | 1955-11-23 |        3 |         3 | Jl. Kampung Bayam No. 07 |       99.42 |   69 |
+| 15 | 00015 | Asep Wedding    | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17       |       51.14 |   24 |
+| 16 | 00016 | Reisha          | Perempuan     | Bogor     | 2003-11-22 |        4 |         2 | Jl. Empang Bogor No. 01  |       57.42 |   21 |
+| 17 | 00017 | Musthofa        | Laki-Laki     | Jakarta   | 2003-10-13 |        4 |         4 | Jl. Merdeka Barat No. 77 |       83.71 |   21 |
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21  |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+--------------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select count(*) as 'jumlah_pegawai' from pegawai;
++----------------+
+| jumlah_pegawai |
++----------------+
+|             18 |
++----------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select nip, nama, umur as 'umur_pegawai_tertua'
+    -> from pegawai
+    -> where umur = (select max(umur) as max_umur
+    -> from pegawai);
++-------+------------+---------------------+
+| nip   | nama       | umur_pegawai_tertua |
++-------+------------+---------------------+
+| 00009 | Aisyah Nur |                  74 |
++-------+------------+---------------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select nip, nama, umur from pegawai
+    -> where umur = (select max(umur) from pegawai);
++-------+------------+------+
+| nip   | nama       | umur |
++-------+------------+------+
+| 00009 | Aisyah Nur |   74 |
++-------+------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select nip, nama, umur
+    -> from pegawai
+    -> where umur = (select max(umur)
+    -> from pegawai);
++-------+------------+------+
+| nip   | nama       | umur |
++-------+------------+------+
+| 00009 | Aisyah Nur |   74 |
++-------+------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select nip, nama, berat_badan
+    -> from pegawai
+    -> where berat_badan = (select min(berat_badan)
+    -> from pegawai);
++-------+----------------+-------------+
+| nip   | nama           | berat_badan |
++-------+----------------+-------------+
+| 00002 | Rifai Ramadhan |       50.73 |
++-------+----------------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select avg(umur) as 'rata-rata_umur_pegawai'
+    -> from pegawai;
++------------------------+
+| rata-rata_umur_pegawai |
++------------------------+
+|                32.3333 |
++------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select count(*) as 'jumlah_pegawai'
+    -> from pegawai
+    -> where jenis_kelamin = 'Laki-Laki'
+    -> and umur > 40
+    -> and idjabatan = 2;
++----------------+
+| jumlah_pegawai |
++----------------+
+|              1 |
++----------------+
+1 row in set (0.001 sec)
+
+MariaDB [dbpegawai]> select count(*) as 'jumlah_pegawai'
+    -> from pegawai
+    -> where jenis_kelamin = 'Perempuan'
+    -> and umur < 40
+    -> and idjabatan = 4;
++----------------+
+| jumlah_pegawai |
++----------------+
+|              1 |
++----------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select count(*) as 'jumlah_pegawai_perempuan'
+    -> from pegawai
+    -> where jenis_kelamin = 'Perempuan';
++--------------------------+
+| jumlah_pegawai_perempuan |
++--------------------------+
+|                        4 |
++--------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select sum(1) as 'jumlah_pegawai_SDM'
+    -> from pegawai
+    -> where iddivisi = 1;
++--------------------+
+| jumlah_pegawai_SDM |
++--------------------+
+|                  5 |
++--------------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select iddivisi,
+    -> count(*) as 'jumlah_pegawai'
+    -> from pegawai
+    -> group by iddivisi;
++----------+----------------+
+| iddivisi | jumlah_pegawai |
++----------+----------------+
+|        1 |              5 |
+|        2 |              5 |
+|        3 |              5 |
+|        4 |              3 |
++----------+----------------+
+4 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select iddivisi,
+    -> case
+    -> when iddivisi = 1 then 'SDM'
+    -> when iddivisi = 2 then 'Keuangan'
+    -> when iddivisi = 3 then 'Marketing'
+    -> when iddivisi = 4 then 'IT'
+    -> end as nama_divisi,
+    -> count(*) as 'jumlah_pegawai'
+    -> from pegawai
+    -> group by iddivisi;
++----------+-------------+----------------+
+| iddivisi | nama_divisi | jumlah_pegawai |
++----------+-------------+----------------+
+|        1 | SDM         |              5 |
+|        2 | Keuangan    |              5 |
+|        3 | Marketing   |              5 |
+|        4 | IT          |              3 |
++----------+-------------+----------------+
+4 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select jenis_kelamin,
+    -> count(*) as 'jumlah_pegawai'
+    -> from pegawai
+    -> group by jenis_kelamin
+    -> having count(*) >= 10;
++---------------+----------------+
+| jenis_kelamin | jumlah_pegawai |
++---------------+----------------+
+| Laki-Laki     |             14 |
++---------------+----------------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nama like 'Muhammad%';
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+| id | nip   | nama            | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                     | berat_badan | umur |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+|  5 | 00005 | Muhammad Rafli  | Laki-Laki     | Jakarta   | 2004-03-25 |        1 |         3 | Jl. Mushola Al Iman No. 01 |       84.76 |   20 |
+|  6 | 00006 | Muhammad Hafis  | Laki-Laki     | Banten    | 2003-01-18 |        2 |         2 | Jl. Syekh Nawawi No. 09    |       56.03 |   21 |
+| 18 | 00018 | Muhammad Arifin | Laki-Laki     | Bogor     | 1991-08-17 |        4 |         2 | Jl. Warung Jambu No. 21    |       96.27 |   33 |
++----+-------+-----------------+---------------+-----------+------------+----------+-----------+----------------------------+-------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nama like '%Santoso';
++----+-------+------------------+---------------+-----------+------------+----------+-----------+-----------------+-------------+------+
+| id | nip   | nama             | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat          | berat_badan | umur |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+-----------------+-------------+------+
+| 12 | 00012 | Frimawan Santoso | Laki-Laki     | Medan     | 1995-10-28 |        3 |         1 | Jl. Toba No. 52 |       64.62 |   29 |
++----+-------+------------------+---------------+-----------+------------+----------+-----------+-----------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nama like '%Asep%';
++----+-------+--------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+| id | nip   | nama         | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat             | berat_badan | umur |
++----+-------+--------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+| 15 | 00015 | Asep Wedding | Laki-Laki     | Jakarta   | 2000-05-11 |        3 |         4 | Jl. Menteng No. 17 |       51.14 |   24 |
++----+-------+--------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]> select * from pegawai
+    -> where nama like '____s%';
++----+-------+------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+| id | nip   | nama       | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat             | berat_badan | umur |
++----+-------+------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+|  3 | 00003 | Hafis Adam | Laki-Laki     | Bogor     | 2005-05-23 |        1 |         4 | Jl. Sarimie No. 13 |       81.62 |   19 |
++----+-------+------------+---------------+-----------+------------+----------+-----------+--------------------+-------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [dbpegawai]>
+
