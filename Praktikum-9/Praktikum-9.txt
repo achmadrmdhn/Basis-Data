@@ -274,4 +274,62 @@ MariaDB [koperasi]> select p.nama, p.harga_jual, jp.nama as jenis_produk
 +------------------+------------+--------------+
 10 rows in set (0.068 sec)
 
+MariaDB [koperasi]> select p.nama, p.harga_jual, jp.nama as jenis_produk
+    -> from produk p right join jenis_produk jp
+    -> on p.jenis_produk_id = jp.id;
++------------------+------------+--------------+
+| nama             | harga_jual | jenis_produk |
++------------------+------------+--------------+
+| Televisi 21 inch |    5040000 | elektronik   |
+| Televisi 40 inch |    7440000 | elektronik   |
+| Kulkas 2 pintu   |    4680000 | elektronik   |
+| Meja Makan       |     600000 | furniture    |
+| NULL             |       NULL | makanan      |
+| Teh Kotak        |       3500 | minuman      |
+| Teh Botol        |       2500 | minuman      |
+| PC Desktop HP    |    9600000 | komputer     |
+| Notebook Acer    |   10800000 | komputer     |
+| Notebook Lenovo  |   12000000 | komputer     |
+| Laptop HP        |   13000000 | komputer     |
++------------------+------------+--------------+
+11 rows in set (0.005 sec)
+
+MariaDB [koperasi]> select p.nama, p.harga_jual, jp.nama as jenis_produk
+    -> from produk p inner join jenis_produk jp
+    -> on p.jenis_produk_id = jp.id;
++------------------+------------+--------------+
+| nama             | harga_jual | jenis_produk |
++------------------+------------+--------------+
+| Televisi 21 inch |    5040000 | elektronik   |
+| Televisi 40 inch |    7440000 | elektronik   |
+| Kulkas 2 pintu   |    4680000 | elektronik   |
+| Meja Makan       |     600000 | furniture    |
+| Teh Kotak        |       3500 | minuman      |
+| Teh Botol        |       2500 | minuman      |
+| PC Desktop HP    |    9600000 | komputer     |
+| Notebook Acer    |   10800000 | komputer     |
+| Notebook Lenovo  |   12000000 | komputer     |
+| Laptop HP        |   13000000 | komputer     |
++------------------+------------+--------------+
+10 rows in set (0.001 sec)
+
+MariaDB [koperasi]> select p.nama, p.harga_jual, jp.nama as jenis_produk
+    -> from produk p left join jenis_produk jp
+    -> on p.jenis_produk_id = jp.id;
++------------------+------------+--------------+
+| nama             | harga_jual | jenis_produk |
++------------------+------------+--------------+
+| Televisi 21 inch |    5040000 | elektronik   |
+| Televisi 40 inch |    7440000 | elektronik   |
+| Kulkas 2 pintu   |    4680000 | elektronik   |
+| Meja Makan       |     600000 | furniture    |
+| Teh Kotak        |       3500 | minuman      |
+| PC Desktop HP    |    9600000 | komputer     |
+| Teh Botol        |       2500 | minuman      |
+| Notebook Acer    |   10800000 | komputer     |
+| Notebook Lenovo  |   12000000 | komputer     |
+| Laptop HP        |   13000000 | komputer     |
++------------------+------------+--------------+
+10 rows in set (0.001 sec)
+
 MariaDB [koperasi]>
