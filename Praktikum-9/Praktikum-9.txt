@@ -1,0 +1,277 @@
+
+Setting environment for using XAMPP for Windows.
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use koperasi
+Database changed
+MariaDB [koperasi]> desc pelanggan;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode      | varchar(10) | YES  |     | NULL    |                |
+| nama      | varchar(45) | YES  | MUL | NULL    |                |
+| jk        | char(1)     | YES  |     | NULL    |                |
+| tmp_lahir | varchar(30) | YES  |     | NULL    |                |
+| tgl_lahir | date        | YES  | MUL | NULL    |                |
+| email     | varchar(45) | YES  |     | NULL    |                |
+| kartu_id  | int(11)     | NO   | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.028 sec)
+
+MariaDB [koperasi]> desc pesanan;
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| id           | int(11) | NO   | PRI | NULL    | auto_increment |
+| tanggal      | date    | YES  |     | NULL    |                |
+| total        | double  | YES  |     | NULL    |                |
+| pelanggan_id | int(11) | NO   | MUL | NULL    |                |
++--------------+---------+------+-----+---------+----------------+
+4 rows in set (0.054 sec)
+
+MariaDB [koperasi]> show tables;
++--------------------+
+| Tables_in_koperasi |
++--------------------+
+| jenis_produk       |
+| kartu              |
+| pelanggan          |
+| pembayaran         |
+| pembelian          |
+| pesanan            |
+| pesanan_items      |
+| produk             |
+| vendor             |
++--------------------+
+9 rows in set (0.004 sec)
+
+MariaDB [koperasi]> desc produk;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| id              | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode            | varchar(10) | YES  | UNI | NULL    |                |
+| nama            | varchar(45) | YES  |     | NULL    |                |
+| harga_beli      | double      | YES  |     | NULL    |                |
+| harga_jual      | double      | YES  |     | NULL    |                |
+| stok            | int(11)     | YES  |     | NULL    |                |
+| min_stok        | int(11)     | YES  |     | NULL    |                |
+| jenis_produk_id | int(11)     | NO   | MUL | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.030 sec)
+
+MariaDB [koperasi]>
+MariaDB [koperasi]>
+MariaDB [koperasi]> select pelanggan.nama, pelanggan.tmp_lahir, pesanan.tanggal, pesanan.total
+    -> from pelanggan join pesanan
+    -> on pelanggan.id = pesanan.pelanggan_id;
++---------------+------------+------------+---------+
+| nama          | tmp_lahir  | tanggal    | total   |
++---------------+------------+------------+---------+
+| Agung Sedayu  | Solo       | 2015-11-04 | 9720000 |
+| Sekar Mirah   | Kediri     | 2015-11-04 |   17500 |
+| Gayatri Dwi   | Jakarta    | 2015-11-04 |       0 |
+| Dewi Gyat     | Jakarta    | 2015-11-04 |       0 |
+| Cassanndra    | Belfast    | 2015-11-04 |       0 |
+| Pandan Wangi  | Yogyakarta | 2015-11-04 |       0 |
+| Pradabashu    | Pati       | 2015-11-04 |       0 |
+| Swandaru Geni | Kediri     | 2015-11-04 |       0 |
+| Andre Haru    | Surabaya   | 2015-11-04 |       0 |
+| Ahmad Hasan   | Surabaya   | 2015-11-04 |       0 |
++---------------+------------+------------+---------+
+10 rows in set (0.066 sec)
+
+MariaDB [koperasi]> select nama, tmp_lahir, tanggal, total
+    -> from pelanggan join pesanan
+    -> on pelanggan.id = pesanan.pelanggan_id;
++---------------+------------+------------+---------+
+| nama          | tmp_lahir  | tanggal    | total   |
++---------------+------------+------------+---------+
+| Agung Sedayu  | Solo       | 2015-11-04 | 9720000 |
+| Sekar Mirah   | Kediri     | 2015-11-04 |   17500 |
+| Gayatri Dwi   | Jakarta    | 2015-11-04 |       0 |
+| Dewi Gyat     | Jakarta    | 2015-11-04 |       0 |
+| Cassanndra    | Belfast    | 2015-11-04 |       0 |
+| Pandan Wangi  | Yogyakarta | 2015-11-04 |       0 |
+| Pradabashu    | Pati       | 2015-11-04 |       0 |
+| Swandaru Geni | Kediri     | 2015-11-04 |       0 |
+| Andre Haru    | Surabaya   | 2015-11-04 |       0 |
+| Ahmad Hasan   | Surabaya   | 2015-11-04 |       0 |
++---------------+------------+------------+---------+
+10 rows in set (0.001 sec)
+
+MariaDB [koperasi]> select produk.nama, produk.harga_jual, jenis_produk.nama
+    -> from produk join jenis_produk
+    -> on produk.jenis_produk_id = jenis_produk.id;
++------------------+------------+------------+
+| nama             | harga_jual | nama       |
++------------------+------------+------------+
+| Televisi 21 inch |    5040000 | elektronik |
+| Televisi 40 inch |    7440000 | elektronik |
+| Kulkas 2 pintu   |    4680000 | elektronik |
+| Meja Makan       |     600000 | furniture  |
+| Teh Kotak        |       3500 | minuman    |
+| Teh Botol        |       2500 | minuman    |
+| PC Desktop HP    |    9600000 | komputer   |
+| Notebook Acer    |   10800000 | komputer   |
+| Notebook Lenovo  |   12000000 | komputer   |
+| Laptop HP        |   13000000 | komputer   |
++------------------+------------+------------+
+10 rows in set (0.007 sec)
+
+MariaDB [koperasi]> select nama, harga_jual, nama
+    -> from produk join jenis_produk
+    -> on produk.jenis_produk_id = jenis_produk.id;
+ERROR 1052 (23000): Column 'nama' in field list is ambiguous
+MariaDB [koperasi]> select produk.nama, produk.harga_jual, jenis_produk.nama as jenis_produk
+    -> from produk join jenis_produk
+    -> on produk.jenis_produk_id = jenis_produk.id;
++------------------+------------+--------------+
+| nama             | harga_jual | jenis_produk |
++------------------+------------+--------------+
+| Televisi 21 inch |    5040000 | elektronik   |
+| Televisi 40 inch |    7440000 | elektronik   |
+| Kulkas 2 pintu   |    4680000 | elektronik   |
+| Meja Makan       |     600000 | furniture    |
+| Teh Kotak        |       3500 | minuman      |
+| Teh Botol        |       2500 | minuman      |
+| PC Desktop HP    |    9600000 | komputer     |
+| Notebook Acer    |   10800000 | komputer     |
+| Notebook Lenovo  |   12000000 | komputer     |
+| Laptop HP        |   13000000 | komputer     |
++------------------+------------+--------------+
+10 rows in set (0.002 sec)
+
+MariaDB [koperasi]> show tables;
++--------------------+
+| Tables_in_koperasi |
++--------------------+
+| jenis_produk       |
+| kartu              |
+| pelanggan          |
+| pembayaran         |
+| pembelian          |
+| pesanan            |
+| pesanan_items      |
+| produk             |
+| vendor             |
++--------------------+
+9 rows in set (0.007 sec)
+
+MariaDB [koperasi]> desc pelanggan;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode      | varchar(10) | YES  |     | NULL    |                |
+| nama      | varchar(45) | YES  | MUL | NULL    |                |
+| jk        | char(1)     | YES  |     | NULL    |                |
+| tmp_lahir | varchar(30) | YES  |     | NULL    |                |
+| tgl_lahir | date        | YES  | MUL | NULL    |                |
+| email     | varchar(45) | YES  |     | NULL    |                |
+| kartu_id  | int(11)     | NO   | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.020 sec)
+
+MariaDB [koperasi]> desc kartu;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode   | varchar(6)  | YES  | UNI | NULL    |                |
+| nama   | varchar(45) | YES  |     | NULL    |                |
+| diskon | double      | YES  |     | NULL    |                |
+| iuran  | double      | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+5 rows in set (0.024 sec)
+
+MariaDB [koperasi]> select pelanggan.nama, pelanggan.tmp_lahir, pelanggan.email, kartu.nama, kartu.diskon
+    -> from pelanggan join kartu
+    -> on pelanggan.kartu_id = kartu.id;
++---------------+------------+----------------------+---------------+--------+
+| nama          | tmp_lahir  | email                | nama          | diskon |
++---------------+------------+----------------------+---------------+--------+
+| Agung Sedayu  | Solo       | sedayu@gmail.com     | Gold Utama    |   0.05 |
+| Sekar Mirah   | Kediri     | mirah@yahoo.com      | Gold Utama    |   0.05 |
+| Gayatri Dwi   | Jakarta    | gaya87@gmail.com     | Gold Utama    |   0.05 |
+| Dewi Gyat     | Jakarta    | giyat@gmail.com      | Gold Utama    |   0.05 |
+| Cassanndra    | Belfast    | casa90@gmail.com     | Gold Utama    |   0.05 |
+| Pandan Wangi  | Yogyakarta | wangi@gmail.com      | Platinum Jaya |    0.1 |
+| Pradabashu    | Pati       | prada85@gmail.com    | Platinum Jaya |    0.1 |
+| Swandaru Geni | Kediri     | swandaru@yahoo.com   | Non Member    |      0 |
+| Andre Haru    | Surabaya   | andre.haru@gmail.com | Non Member    |      0 |
+| Ahmad Hasan   | Surabaya   | ahasan@gmail.com     | Non Member    |      0 |
++---------------+------------+----------------------+---------------+--------+
+10 rows in set (0.003 sec)
+
+MariaDB [koperasi]> select pelanggan.nama, pelanggan.tmp_lahir, pelanggan.email, kartu.nama as jenis_kartu, kartu.diskon
+    -> from pelanggan join kartu
+    -> on pelanggan.kartu_id = kartu.id;
++---------------+------------+----------------------+---------------+--------+
+| nama          | tmp_lahir  | email                | jenis_kartu   | diskon |
++---------------+------------+----------------------+---------------+--------+
+| Agung Sedayu  | Solo       | sedayu@gmail.com     | Gold Utama    |   0.05 |
+| Sekar Mirah   | Kediri     | mirah@yahoo.com      | Gold Utama    |   0.05 |
+| Gayatri Dwi   | Jakarta    | gaya87@gmail.com     | Gold Utama    |   0.05 |
+| Dewi Gyat     | Jakarta    | giyat@gmail.com      | Gold Utama    |   0.05 |
+| Cassanndra    | Belfast    | casa90@gmail.com     | Gold Utama    |   0.05 |
+| Pandan Wangi  | Yogyakarta | wangi@gmail.com      | Platinum Jaya |    0.1 |
+| Pradabashu    | Pati       | prada85@gmail.com    | Platinum Jaya |    0.1 |
+| Swandaru Geni | Kediri     | swandaru@yahoo.com   | Non Member    |      0 |
+| Andre Haru    | Surabaya   | andre.haru@gmail.com | Non Member    |      0 |
+| Ahmad Hasan   | Surabaya   | ahasan@gmail.com     | Non Member    |      0 |
++---------------+------------+----------------------+---------------+--------+
+10 rows in set (0.001 sec)
+
+MariaDB [koperasi]> select produk.nama as nama_pelanggan, produk.harga_jual, jenis_produk.nama as jenis_produk
+    -> from pelanggan join kartu
+    -> on pelanggan.kartu_id = kartu.id;
+ERROR 1054 (42S22): Unknown column 'produk.nama' in 'field list'
+MariaDB [koperasi]> select pelanggan.nama as nama_pelanggan, pelanggan.tmp_lahir, pelanggan.email, kartu.nama as jenis_kartu, kartu.diskon
+    -> from pelanggan join kartu
+    -> on pelanggan.kartu_id = kartu.id;
++----------------+------------+----------------------+---------------+--------+
+| nama_pelanggan | tmp_lahir  | email                | jenis_kartu   | diskon |
++----------------+------------+----------------------+---------------+--------+
+| Agung Sedayu   | Solo       | sedayu@gmail.com     | Gold Utama    |   0.05 |
+| Sekar Mirah    | Kediri     | mirah@yahoo.com      | Gold Utama    |   0.05 |
+| Gayatri Dwi    | Jakarta    | gaya87@gmail.com     | Gold Utama    |   0.05 |
+| Dewi Gyat      | Jakarta    | giyat@gmail.com      | Gold Utama    |   0.05 |
+| Cassanndra     | Belfast    | casa90@gmail.com     | Gold Utama    |   0.05 |
+| Pandan Wangi   | Yogyakarta | wangi@gmail.com      | Platinum Jaya |    0.1 |
+| Pradabashu     | Pati       | prada85@gmail.com    | Platinum Jaya |    0.1 |
+| Swandaru Geni  | Kediri     | swandaru@yahoo.com   | Non Member    |      0 |
+| Andre Haru     | Surabaya   | andre.haru@gmail.com | Non Member    |      0 |
+| Ahmad Hasan    | Surabaya   | ahasan@gmail.com     | Non Member    |      0 |
++----------------+------------+----------------------+---------------+--------+
+10 rows in set (0.004 sec)
+
+MariaDB [koperasi]> select p.nama, p.harga_jual, jp.nama as jenis_produk
+    -> from produk p join jenis_produk jp
+    -> on p.jenis_produk_id = jp.id;
++------------------+------------+--------------+
+| nama             | harga_jual | jenis_produk |
++------------------+------------+--------------+
+| Televisi 21 inch |    5040000 | elektronik   |
+| Televisi 40 inch |    7440000 | elektronik   |
+| Kulkas 2 pintu   |    4680000 | elektronik   |
+| Meja Makan       |     600000 | furniture    |
+| Teh Kotak        |       3500 | minuman      |
+| Teh Botol        |       2500 | minuman      |
+| PC Desktop HP    |    9600000 | komputer     |
+| Notebook Acer    |   10800000 | komputer     |
+| Notebook Lenovo  |   12000000 | komputer     |
+| Laptop HP        |   13000000 | komputer     |
++------------------+------------+--------------+
+10 rows in set (0.068 sec)
+
+MariaDB [koperasi]>
