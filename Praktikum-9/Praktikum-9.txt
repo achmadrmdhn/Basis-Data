@@ -69,8 +69,6 @@ MariaDB [koperasi]> desc produk;
 +-----------------+-------------+------+-----+---------+----------------+
 8 rows in set (0.030 sec)
 
-MariaDB [koperasi]>
-MariaDB [koperasi]>
 MariaDB [koperasi]> select pelanggan.nama, pelanggan.tmp_lahir, pesanan.tanggal, pesanan.total
     -> from pelanggan join pesanan
     -> on pelanggan.id = pesanan.pelanggan_id;
@@ -132,6 +130,7 @@ MariaDB [koperasi]> select nama, harga_jual, nama
     -> from produk join jenis_produk
     -> on produk.jenis_produk_id = jenis_produk.id;
 ERROR 1052 (23000): Column 'nama' in field list is ambiguous
+
 MariaDB [koperasi]> select produk.nama, produk.harga_jual, jenis_produk.nama as jenis_produk
     -> from produk join jenis_produk
     -> on produk.jenis_produk_id = jenis_produk.id;
@@ -232,10 +231,6 @@ MariaDB [koperasi]> select pelanggan.nama, pelanggan.tmp_lahir, pelanggan.email,
 +---------------+------------+----------------------+---------------+--------+
 10 rows in set (0.001 sec)
 
-MariaDB [koperasi]> select produk.nama as nama_pelanggan, produk.harga_jual, jenis_produk.nama as jenis_produk
-    -> from pelanggan join kartu
-    -> on pelanggan.kartu_id = kartu.id;
-ERROR 1054 (42S22): Unknown column 'produk.nama' in 'field list'
 MariaDB [koperasi]> select pelanggan.nama as nama_pelanggan, pelanggan.tmp_lahir, pelanggan.email, kartu.nama as jenis_kartu, kartu.diskon
     -> from pelanggan join kartu
     -> on pelanggan.kartu_id = kartu.id;
