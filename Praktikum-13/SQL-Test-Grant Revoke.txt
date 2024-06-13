@@ -1,0 +1,146 @@
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u kasir1 -p
+Enter password: ***
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 18
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> exit
+Bye
+
+
+
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u kasir2 -p
+Enter password: ***
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 19
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> exit
+Bye
+
+
+
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u kasir1 -p
+Enter password: ***
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 20
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use koperasi;
+Database changed
+
+MariaDB [koperasi]> insert into produk values
+    -> ('', 'HP02', 'Iphone 15 Pro Max', 15000000, 19000000, 15, 5, 1);
+Query OK, 1 row affected, 1 warning (0.010 sec)
+
+MariaDB [koperasi]> select * from produk;
++----+------+-------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama              | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+-------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch  |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch  |    5500000 |    7440000 |  -46 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu    |    3500000 |    4680000 |    6 |        2 |               1 |
+|  4 | M001 | Meja Makan        |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01 | Teh Kotak         |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP     |    7000000 |    9600000 |    9 |        2 |               5 |
+|  7 | TB01 | Teh Botol         |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01 | Notebook Acer     |    8000000 |   10800000 |    7 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo   |    9000000 |   12000000 |    9 |        2 |               5 |
+| 10 | L004 | Laptop HP         |   12000000 |   25000000 |   20 |        5 |               5 |
+| 12 | HP02 | Iphone 15 Pro Max |   15000000 |   19000000 |   15 |        5 |               1 |
++----+------+-------------------+------------+------------+------+----------+-----------------+
+11 rows in set (0.001 sec)
+
+MariaDB [koperasi]> update pesanan_items set
+    -> harga = 150000
+    -> where id = 11;
+Query OK, 1 row affected (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [koperasi]> update pesanan_items set
+    -> harga = 35000
+    -> where id = 10;
+Query OK, 1 row affected (0.014 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [koperasi]> select * from pesanan_items;
++----+-----------+------------+------+---------+
+| id | produk_id | pesanan_id | qty  | harga   |
++----+-----------+------------+------+---------+
+|  1 |         1 |          1 |    1 | 5040000 |
+|  2 |         3 |          1 |    1 | 4680000 |
+|  3 |         5 |          2 |    5 |    3500 |
+|  6 |         5 |          3 |   10 |    3500 |
+|  7 |         1 |          3 |    1 | 5040000 |
+|  9 |         5 |          5 |   10 |    3500 |
+| 10 |         5 |          6 |   20 |   35000 |
+| 11 |         2 |          5 |   50 |  150000 |
++----+-----------+------------+------+---------+
+8 rows in set (0.001 sec)
+
+MariaDB [koperasi]> exit
+Bye
+
+
+
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u kasir2 -p
+Enter password: ***
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 21
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use koperasi
+Database changed
+MariaDB [koperasi]> select * from produk
+    -> limit 3;
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7440000 |  -46 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4680000 |    6 |        2 |               1 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+3 rows in set (0.003 sec)
+
+MariaDB [koperasi]> exit
+Bye
+
+
+
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u kasir1 -p
+Enter password: ***
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 22
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use koperasi;
+Database changed

@@ -1,0 +1,202 @@
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 17
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| data_karyawan      |
+| data_mahasiswa     |
+| data_temenbaik     |
+| db_puskesmas       |
+| dbkoperasi         |
+| dbpegawai          |
+| dbpuskesmas        |
+| dbtoko             |
+| information_schema |
+| koperasi           |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| puskesmas          |
+| puskesmas_new      |
+| test               |
++--------------------+
+16 rows in set (0.006 sec)
+
+MariaDB [(none)]> use dbkoperasi
+Database changed
+MariaDB [dbkoperasi]> show tables;
++----------------------+
+| Tables_in_dbkoperasi |
++----------------------+
+| jenis_produk         |
+| produk               |
++----------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [dbkoperasi]> Bye
+
+
+
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u root koperasi
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 18
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [koperasi]> show tables;
++--------------------+
+| Tables_in_koperasi |
++--------------------+
+| jenis_produk       |
+| kartu              |
+| pelanggan          |
+| pembayaran         |
+| pembelian          |
+| pesanan            |
+| pesanan_items      |
+| produk             |
+| vendor             |
++--------------------+
+9 rows in set (0.003 sec)
+
+MariaDB [koperasi]> grant select, insert, update, delete on koperasi.produk to kasir1@localhost identified by '123';
+ERROR 1034 (HY000): Index for table 'global_priv' is corrupt; try to repair it
+
+
+
+
+MariaDB [koperasi]> grant select,insert,update,delete on koperasi.produk to kasir1@localhost identified by '123';
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [koperasi]> grant select,insert,update,delete on koperasi.pesanan_items to kasir1@localhost identified by '123';
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [koperasi]> grant select on koperasi.produk to kasir2@localhost identified by '321';
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [koperasi]> show grants for kasir1@localhost;
++---------------------------------------------------------------------------------------------------------------+
+| Grants for kasir1@localhost
+                                        |
++---------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `kasir1`@`localhost` IDENTIFIED BY PASSWORD '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257' |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON `koperasi`.`produk` TO `kasir1`@`localhost`                           |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON `koperasi`.`pesanan_items` TO `kasir1`@`localhost`                    |
++---------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [koperasi]> show grants for kasir2@localhost;
++---------------------------------------------------------------------------------------------------------------+
+| Grants for kasir2@localhost
+                                        |
++---------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `kasir2`@`localhost` IDENTIFIED BY PASSWORD '*7297C3E22DEB91303FC493303A8158AD4231F486' |
+| GRANT SELECT ON `koperasi`.`produk` TO `kasir2`@`localhost`
+                                        |
++---------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [koperasi]> desc produk;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra
+|
++-----------------+-------------+------+-----+---------+----------------+
+| id              | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode            | varchar(10) | YES  | UNI | NULL    |
+|
+| nama            | varchar(45) | YES  |     | NULL    |
+|
+| harga_beli      | double      | YES  |     | NULL    |
+|
+| harga_jual      | double      | YES  |     | NULL    |
+|
+| stok            | int(11)     | YES  |     | NULL    |
+|
+| min_stok        | int(11)     | YES  |     | NULL    |
+|
+| jenis_produk_id | int(11)     | NO   | MUL | NULL    |
+|
++-----------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.042 sec)
+
+MariaDB [koperasi]> select * from produk;
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7440000 |  -46 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4680000 |    6 |        2 |               1 |
+|  4 | M001 | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01 | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP    |    7000000 |    9600000 |    9 |        2 |               5 |
+|  7 | TB01 | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01 | Notebook Acer    |    8000000 |   10800000 |    7 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo  |    9000000 |   12000000 |    9 |        2 |               5 |
+| 10 | L004 | Laptop HP        |   12000000 |   25000000 |   20 |        5 |               5 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+10 rows in set (0.089 sec)
+
+
+MariaDB [koperasi]> desc jenis_produk;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(45) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.034 sec)
+
+MariaDB [koperasi]> select * from jenis_produk;
++----+------------+
+| id | nama       |
++----+------------+
+|  1 | elektronik |
+|  2 | furniture  |
+|  3 | makanan    |
+|  4 | minuman    |
+|  5 | komputer   |
++----+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [koperasi]> desc pesanan_items;
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+| produk_id  | int(11) | NO   | MUL | NULL    |                |
+| pesanan_id | int(11) | NO   | MUL | NULL    |                |
+| qty        | int(11) | YES  |     | NULL    |                |
+| harga      | double  | YES  |     | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+5 rows in set (0.058 sec)
+
+MariaDB [koperasi]> select * from pesanan_items;
++----+-----------+------------+------+---------+
+| id | produk_id | pesanan_id | qty  | harga   |
++----+-----------+------------+------+---------+
+|  1 |         1 |          1 |    1 | 5040000 |
+|  2 |         3 |          1 |    1 | 4680000 |
+|  3 |         5 |          2 |    5 |    3500 |
+|  6 |         5 |          3 |   10 |    3500 |
+|  7 |         1 |          3 |    1 | 5040000 |
+|  9 |         5 |          5 |   10 |    3500 |
+| 10 |         5 |          6 |   20 |    3500 |
+| 11 |         2 |          5 |   50 |   50000 |
++----+-----------+------------+------+---------+
+8 rows in set (0.003 sec)
+
+MariaDB [koperasi]>

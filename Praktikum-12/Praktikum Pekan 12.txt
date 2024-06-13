@@ -1,2 +1,226 @@
 Praktikum Pekan 12 - Basis Data
 
+
+achma@LAPTOP-I843EBFL c:\xampp
+# mysql -u root koperasi
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 31
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [koperasi]> show tables;
++--------------------+
+| Tables_in_koperasi |
++--------------------+
+| jenis_produk       |
+| kartu              |
+| pelanggan          |
+| pembayaran         |
+| pembelian          |
+| pesanan            |
+| pesanan_items      |
+| produk             |
+| vendor             |
++--------------------+
+9 rows in set (0.002 sec)
+
+MariaDB [koperasi]> desc pesanan_items
+    -> ;
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+| produk_id  | int(11) | NO   | MUL | NULL    |                |
+| pesanan_id | int(11) | NO   | MUL | NULL    |                |
+| qty        | int(11) | YES  |     | NULL    |                |
+| harga      | double  | YES  |     | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+5 rows in set (0.034 sec)
+
+MariaDB [koperasi]> select * from pesanan_items;
++----+-----------+------------+------+---------+
+| id | produk_id | pesanan_id | qty  | harga   |
++----+-----------+------------+------+---------+
+|  1 |         1 |          1 |    1 | 5040000 |
+|  2 |         3 |          1 |    1 | 4680000 |
+|  3 |         5 |          2 |    5 |    3500 |
+|  6 |         5 |          3 |   10 |    3500 |
+|  7 |         1 |          3 |    1 | 5040000 |
+|  9 |         5 |          5 |   10 |    3500 |
+| 10 |         5 |          6 |   20 |    3500 |
++----+-----------+------------+------+---------+
+7 rows in set (0.001 sec)
+
+MariaDB [koperasi]> delimiter $$
+MariaDB [koperasi]> create or replace trigger kurangiStok
+    -> after insert on pesanan_items
+    -> for each row
+    -> begin
+    -> update produk set stok = stok - new.qty
+    -> where id = new.produk_id;
+    -> END$$
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [koperasi]> desc pesanan$$
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| id           | int(11) | NO   | PRI | NULL    | auto_increment |
+| tanggal      | date    | YES  |     | NULL    |                |
+| total        | double  | YES  |     | NULL    |                |
+| pelanggan_id | int(11) | NO   | MUL | NULL    |                |
++--------------+---------+------+-----+---------+----------------+
+4 rows in set (0.049 sec)
+
+MariaDB [koperasi]> desc pesanan_items$$
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+| produk_id  | int(11) | NO   | MUL | NULL    |                |
+| pesanan_id | int(11) | NO   | MUL | NULL    |                |
+| qty        | int(11) | YES  |     | NULL    |                |
+| harga      | double  | YES  |     | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+5 rows in set (0.028 sec)
+
+MariaDB [koperasi]> select * from pesanan_items$$
++----+-----------+------------+------+---------+
+| id | produk_id | pesanan_id | qty  | harga   |
++----+-----------+------------+------+---------+
+|  1 |         1 |          1 |    1 | 5040000 |
+|  2 |         3 |          1 |    1 | 4680000 |
+|  3 |         5 |          2 |    5 |    3500 |
+|  6 |         5 |          3 |   10 |    3500 |
+|  7 |         1 |          3 |    1 | 5040000 |
+|  9 |         5 |          5 |   10 |    3500 |
+| 10 |         5 |          6 |   20 |    3500 |
++----+-----------+------------+------+---------+
+7 rows in set (0.001 sec)
+
+MariaDB [koperasi]> insert into pesanan_items values
+    -> ('', 2, 5, 50, 50000)$$
+Query OK, 1 row affected, 1 warning (0.022 sec)
+
+MariaDB [koperasi]> select * from pesanan_items$$
++----+-----------+------------+------+---------+
+| id | produk_id | pesanan_id | qty  | harga   |
++----+-----------+------------+------+---------+
+|  1 |         1 |          1 |    1 | 5040000 |
+|  2 |         3 |          1 |    1 | 4680000 |
+|  3 |         5 |          2 |    5 |    3500 |
+|  6 |         5 |          3 |   10 |    3500 |
+|  7 |         1 |          3 |    1 | 5040000 |
+|  9 |         5 |          5 |   10 |    3500 |
+| 10 |         5 |          6 |   20 |    3500 |
+| 11 |         2 |          5 |   50 |   50000 |
++----+-----------+------------+------+---------+
+8 rows in set (0.001 sec)
+
+MariaDB [koperasi]> desc pembelian$$
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| tanggal   | varchar(45) | YES  |     | NULL    |                |
+| nomor     | varchar(10) | YES  | UNI | NULL    |                |
+| produk_id | int(11)     | YES  | MUL | NULL    |                |
+| jumlah    | int(11)     | YES  |     | NULL    |                |
+| harga     | double      | YES  |     | NULL    |                |
+| vendor_id | int(11)     | YES  | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+7 rows in set (0.045 sec)
+
+MariaDB [koperasi]> select * from pembelian$$
++----+------------+-------+-----------+--------+---------+-----------+
+| id | tanggal    | nomor | produk_id | jumlah | harga   | vendor_id |
++----+------------+-------+-----------+--------+---------+-----------+
+|  1 | 2019-10-10 | P001  |         1 |      2 | 3500000 |         1 |
+|  2 | 2019-11-20 | P002  |         2 |      5 | 5500000 |         2 |
+|  3 | 2019-12-12 | P003  |         2 |      5 | 5400000 |         1 |
+|  4 | 2020-01-20 | P004  |         7 |    200 |    1800 |         3 |
+|  5 | 2020-01-20 | P005  |         5 |    100 |    2300 |         3 |
++----+------------+-------+-----------+--------+---------+-----------+
+5 rows in set (0.001 sec)
+
+MariaDB [koperasi]> select * from produk$$
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7440000 |  -46 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4680000 |    6 |        2 |               1 |
+|  4 | M001 | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01 | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP    |    7000000 |    9600000 |    9 |        2 |               5 |
+|  7 | TB01 | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01 | Notebook Acer    |    8000000 |   10800000 |    7 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo  |    9000000 |   12000000 |    9 |        2 |               5 |
+| 10 | L004 | Laptop HP        |   12000000 |   25000000 |   20 |        5 |               5 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+10 rows in set (0.001 sec)
+
+MariaDB [koperasi]> delimiter ;
+MariaDB [koperasi]> delimiter *
+MariaDB [koperasi]> create or replace trigger updateStok
+    -> after update on pembelian
+    -> for each row
+    -> begin
+    -> update produk set stok = stok + new.jumlah
+    -> where id = new.produk_id;
+    -> END*
+Query OK, 0 rows affected (0.024 sec)
+
+MariaDB [koperasi]> delimiter ;
+MariaDB [koperasi]> select * from pembelian;
++----+------------+-------+-----------+--------+---------+-----------+
+| id | tanggal    | nomor | produk_id | jumlah | harga   | vendor_id |
++----+------------+-------+-----------+--------+---------+-----------+
+|  1 | 2019-10-10 | P001  |         1 |      2 | 3500000 |         1 |
+|  2 | 2019-11-20 | P002  |         2 |      5 | 5500000 |         2 |
+|  3 | 2019-12-12 | P003  |         2 |      5 | 5400000 |         1 |
+|  4 | 2020-01-20 | P004  |         7 |    200 |    1800 |         3 |
+|  5 | 2020-01-20 | P005  |         5 |    100 |    2300 |         3 |
++----+------------+-------+-----------+--------+---------+-----------+
+5 rows in set (0.005 sec)
+
+MariaDB [koperasi]> desc pembelian;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| tanggal   | varchar(45) | YES  |     | NULL    |                |
+| nomor     | varchar(10) | YES  | UNI | NULL    |                |
+| produk_id | int(11)     | YES  | MUL | NULL    |                |
+| jumlah    | int(11)     | YES  |     | NULL    |                |
+| harga     | double      | YES  |     | NULL    |                |
+| vendor_id | int(11)     | YES  | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+7 rows in set (0.036 sec)
+
+MariaDB [koperasi]> insert into pembelian values
+    -> ('', 2024-02-15, 'P006', 5, 4, 3500, 1);
+Query OK, 1 row affected, 1 warning (0.023 sec)
+
+MariaDB [koperasi]> select * from produk;
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7440000 |  -46 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4680000 |    6 |        2 |               1 |
+|  4 | M001 | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01 | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP    |    7000000 |    9600000 |    9 |        2 |               5 |
+|  7 | TB01 | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01 | Notebook Acer    |    8000000 |   10800000 |    7 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo  |    9000000 |   12000000 |    9 |        2 |               5 |
+| 10 | L004 | Laptop HP        |   12000000 |   25000000 |   20 |        5 |               5 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+10 rows in set (0.001 sec)
+
+MariaDB [koperasi]>
+ 

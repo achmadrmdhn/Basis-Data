@@ -1,0 +1,16 @@
+grant  :
+untuk mengubah awalan pembuka mysql dan memberi akses pengguna
+
+revoke :
+mengembalikan atau menghapus hak aksesnya
+
+diketahui sebuah database koperasi, berikan perintah grant dan revoke sebagai berikut:
+- buat user 'kasir1'
+- berikan akses select, insert, update, delete ke kasir1 untuk table produk, pesanan_items
+- buat user 'kasir2'
+- berikan akses select ke kasir2 untuk table product
+- tambahkan satu data ke table produk dengan user kasir1
+- update 2 data ke table pesanan_items dengan user kasir2
+- tampilkan 3 product dengan user kasir1
+- hapus akses delete dari user kasir1
+- tampilkan grants dari kedua user
